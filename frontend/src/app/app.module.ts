@@ -6,12 +6,14 @@ import { InputComponent } from './components/input/input.component';
 import { MainComponent } from './components/main/main.component';
 import {NgxEditorModule} from "ngx-editor";
 import {FormsModule} from "@angular/forms";
+import { PostsComponent } from './components/posts/posts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InputComponent,
-    MainComponent
+    MainComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule,
