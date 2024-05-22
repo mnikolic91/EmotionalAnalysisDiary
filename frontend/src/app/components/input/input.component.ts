@@ -1,10 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Editor} from "ngx-editor";
+import { Editor, NgxEditorModule } from "ngx-editor";
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.css']
+    selector: 'app-input',
+    templateUrl: './input.component.html',
+    styleUrls: ['./input.component.css'],
+    standalone: true,
+    imports: [NgxEditorModule, ReactiveFormsModule, FormsModule]
 })
 export class InputComponent implements OnInit, OnDestroy {
   editor!: Editor;
