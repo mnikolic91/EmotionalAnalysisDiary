@@ -1,10 +1,6 @@
 from rest_framework import serializers
-from backend.models import User, UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
+from backend.models import UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
 
 class UserInputSerializer(serializers.ModelSerializer):
     class Meta:

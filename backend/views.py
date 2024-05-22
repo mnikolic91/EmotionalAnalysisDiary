@@ -1,10 +1,7 @@
 from rest_framework import viewsets
-from .models import User, UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
-from emotional_diary.serializers import UserSerializer, UserInputSerializer, SentimentEmotionSerializer, AverageWeekScoresSerializer, AverageMonthScoresSerializer
+from .models import  UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
+from emotional_diary.serializers import UserInputSerializer, SentimentEmotionSerializer, AverageWeekScoresSerializer, AverageMonthScoresSerializer
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 class UserInputViewSet(viewsets.ModelViewSet):
     queryset = UserInput.objects.all()

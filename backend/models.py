@@ -2,21 +2,7 @@ import uuid
 
 from django.db import models
 
-class User(models.Model):
-    id = models.IntegerField(primary_key=True, default=1)
-    name = models.CharField(max_length=20, default='User')
-
-    class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
-
-    def __str__(self):
-        return self.name
-
-
 class UserInput(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 
@@ -29,7 +15,6 @@ class UserInput(models.Model):
 
 
 class SentimentEmotion(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_input = models.ForeignKey(UserInput, on_delete=models.CASCADE)
     sentiment_score = models.FloatField()
     joy_score = models.FloatField()
@@ -48,8 +33,6 @@ class SentimentEmotion(models.Model):
 
 
 class AverageWeekScores(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     week_start_date = models.DateField()
     week_end_date = models.DateField()
     average_sentiment = models.FloatField()
@@ -68,8 +51,6 @@ class AverageWeekScores(models.Model):
 
 
 class AverageMonthScores(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     month = models.CharField(max_length=9)
     average_sentiment = models.FloatField()
     average_joy_score = models.FloatField()

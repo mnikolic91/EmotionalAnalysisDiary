@@ -21,7 +21,6 @@ from rest_framework import routers
 from backend import views
 
 router = routers.DefaultRouter()
-router. register(r'user', views.UserViewSet)
 router. register(r'userinput', views.UserInputViewSet)
 router. register(r'sentimentemotion', views.SentimentEmotionViewSet)
 router. register(r'averageweek', views.AverageWeekScoresViewSet)
