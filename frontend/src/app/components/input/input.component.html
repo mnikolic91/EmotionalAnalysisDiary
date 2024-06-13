@@ -1,4 +1,5 @@
 <div class="NgxEditor__Wrapper">
-  <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+  <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
   <ngx-editor [editor]="editor" [ngModel]="html" [disabled]="false" [placeholder]="'Dear diary...'"></ngx-editor>
+  <button (click)="onSubmit()">Submit</button>
 </div>
