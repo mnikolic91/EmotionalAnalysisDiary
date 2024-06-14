@@ -9,12 +9,13 @@ class UserInput(models.Model):
         verbose_name_plural = 'user inputs'
 
     def __str__(self):
-        return self.date
+        return self.text
 
 
 class SentimentEmotion(models.Model):
     user_input = models.ForeignKey(UserInput, on_delete=models.CASCADE)
     sentiment_score = models.FloatField()
+    sentiment_label = models.CharField(max_length=20)
     joy_score = models.FloatField()
     sadness_score = models.FloatField()
     anger_score = models.FloatField()
@@ -26,7 +27,7 @@ class SentimentEmotion(models.Model):
         verbose_name_plural = 'sentiments emotions'
 
     def __str__(self):
-        return self.user_input
+        return self.user_input.text
 
 
 
