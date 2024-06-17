@@ -4,10 +4,13 @@
   <div class="col-sm-2"></div>
 </div>
 <div class="row">
-<div class="row">
   <div class="col-sm">
-    @defer {<app-posts></app-posts>}</div>
-  <div class="col-sm-8">@defer {<app-input></app-input>} </div>
-  <div class="col-sm">STATS WILL COME HERE</div>
-</div>
+    <app-posts></app-posts>
+  </div>
+  <div class="col-sm-8">
+    <app-input (postIdChange)="handlePostIdChange($event)"></app-input>
+  </div>
+  <div class="col-sm">
+    <app-input-stats [currentPostId]="currentPostId"></app-input-stats>
+  </div>
 </div>

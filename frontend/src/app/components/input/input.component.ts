@@ -1,8 +1,10 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Editor, NgxEditorModule } from 'ngx-editor';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { UserInput } from '../../models/user-input.model';
+import { SentimentEmotion } from "../../models/sentiment-emotion.model";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-input',
@@ -14,12 +16,19 @@ import { UserInput } from '../../models/user-input.model';
 export class InputComponent implements OnInit, OnDestroy {
   editor!: Editor;
   userInputText: string = '';
-  emotionResult: any;
+  emotionResult: SentimentEmotion[] = [];
+  postId: number | undefined;
 
-  apiService = inject(ApiService);
+  @Output() postIdChange: EventEmitter<number> = new EventEmitter<number>();
+
+  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.editor = new Editor();
+
+    this.route.params.subscribe(params => {
+      this.postId = +params['postId'];
+    });
   }
 
   ngOnDestroy(): void {
@@ -29,20 +38,16 @@ export class InputComponent implements OnInit, OnDestroy {
   onSubmit() {
     const cleanedText = this.stripHtmlTags(this.userInputText.trim());
 
-    console.log('Submitting user input:', cleanedText);
-
     const newUserInput: UserInput = { text: cleanedText, date: new Date() };
 
     this.apiService.createUserInput(newUserInput).subscribe(response => {
-      console.log('User input created:', response);
+      this.postIdChange.emit(response.id);
 
-      this.apiService.getSentimentEmotions().subscribe(emotionResponse => {
-        console.log('Sentiment analysis result:', emotionResponse);
+      this.apiService.getSentimentEmotions(response.id).subscribe(emotionResponse => {
         this.emotionResult = emotionResponse;
       }, emotionError => {
         console.error('Error getting sentiment emotions:', emotionError);
       });
-
     }, error => {
       console.error('Error creating user input:', error);
     });
