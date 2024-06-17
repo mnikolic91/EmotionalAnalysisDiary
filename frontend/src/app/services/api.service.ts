@@ -12,8 +12,7 @@ import {AverageMonthScores} from '../models/average-month-scores.model';
 export class ApiService {
   private apiUrl = '/api';
 
-  http= inject(HttpClient)
-
+  http = inject(HttpClient)
 
   getUserInputs(): Observable<UserInput[]> {
     return this.http.get<UserInput[]>(`${this.apiUrl}/user-input/`);
@@ -23,7 +22,7 @@ export class ApiService {
     return this.http.post<UserInput>(`${this.apiUrl}/user-input/`, userInput);
   }
 
-  getSentimentEmotions(): Observable<SentimentEmotion[]> {
+  getSentimentEmotions(id: number | undefined): Observable<SentimentEmotion[]> {
     return this.http.get<SentimentEmotion[]>(`${this.apiUrl}/sentimentemotion/`);
   }
 
