@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 
 from backend import models
@@ -6,16 +5,13 @@ from backend.models import UserInput, SentimentEmotion, AverageWeekScores, Avera
 from backend.nlp_utils import analyze_text
 
 
-class UserInputSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserInput
-        fields = '__all__'
+class UserInputSerializer(serializers.Serializer):
+    text = serializers.CharField()
 
-    def save(self, **kwargs):
-        instance = super().save(**kwargs)
+    def create(self, validated_data):
+        instance = UserInput.objects.create(text=validated_data['text'])
         features_to_analyze = {"sentiment": {}, "emotion": {}}
         result = analyze_text(instance.text, features_to_analyze)
-        print(result)
         models.SentimentEmotion.objects.create(
             user_input=instance,
             sentiment_score=result["sentiment"]["document"]["score"],
@@ -27,6 +23,15 @@ class UserInputSerializer(serializers.ModelSerializer):
             disgust_score=result["emotion"]["document"]["emotion"]["disgust"],
         )
         return instance
+
+    @property
+    def data(self):
+        instance = self.instance
+        emotion_instance = instance.sentimentemotion_set.first()
+        return {'id': instance.id, 'text': instance.text, 'emotion_id': emotion_instance.id,
+                'sentiment_score': emotion_instance.sentiment_score, 'sentiment_label': emotion_instance.sentiment_label,
+                'joy_score': emotion_instance.joy_score, 'sadness_score': emotion_instance.sadness_score, 'anger_score': emotion_instance.anger_score,
+                'fear_score': emotion_instance.fear_score, 'disgust_score': emotion_instance.disgust_score}
 
 
 class SentimentEmotionSerializer(serializers.ModelSerializer):
