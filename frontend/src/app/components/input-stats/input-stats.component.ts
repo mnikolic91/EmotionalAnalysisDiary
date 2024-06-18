@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
 import { SentimentEmotion } from '../../models/sentiment-emotion.model';
 import { ApiService } from '../../services/api.service';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
@@ -15,19 +15,15 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 export class InputStatsComponent implements OnChanges {
   @Input() currentPostId: number | undefined;
 
+  apiService = inject(ApiService);
+
   emotionResult: SentimentEmotion[] = [];
   single: any[] = [];
 
-  colorScheme = 'cool';
-  showXAxis = true;
-  showYAxis = true;
-  showLegend = true;
-  showXAxisLabel = true;
-  showYAxisLabel = true;
-  xAxisLabel = 'Emotion';
-  yAxisLabel = 'Score';
+  colorScheme = 'forest';
+  showLegend = false;
+  showLabels = true;
 
-  constructor(private apiService: ApiService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentPostId'] && changes['currentPostId'].currentValue) {

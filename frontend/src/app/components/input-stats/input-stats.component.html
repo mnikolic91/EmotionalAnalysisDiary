@@ -1,14 +1,9 @@
-  <ngx-charts-bar-vertical
+  <ngx-charts-pie-chart
     [view]="[400, 300]"
     [scheme]="colorScheme"
     [results]="single"
     [gradient]="false"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
     [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
+    [labels]="showLabels"
     (select)="onSelect($event)">
-  </ngx-charts-bar-vertical>
+  </ngx-charts-pie-chart>
