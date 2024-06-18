@@ -7,9 +7,34 @@
   <div class="col-sm-1">
   </div>
   <div class="col-sm-8">
-    <app-input (postIdChange)="handlePostIdChange($event)"></app-input>
+    <div class="NgxEditor__Wrapper">
+      <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+      <ngx-editor [editor]="editor" [(ngModel)]="userInputText" [disabled]="false"
+                  [placeholder]="'Dear diary...'"></ngx-editor>
+      <button (click)="onSubmit()">Submit</button>
+    </div>
+
+    <ngx-charts-bar-horizontal
+    [view]="[300, 50]"
+    [scheme]="colorScheme"
+    [results]="sentimentData"
+    [legend]="showLegend"
+    [showDataLabel]="showLabels">
+  </ngx-charts-bar-horizontal>
+   @if (sentimentLabel) {
+  <div class="sentiment-label">
+    {{ sentimentLabel }}
   </div>
-  <div class="col-sm">
-    <app-input-stats [currentPostId]="currentPostId"></app-input-stats>
+   }
+    <div class="row">
+      <ngx-charts-pie-chart
+        [view]="[400, 300]"
+        [scheme]="colorScheme"
+        [results]="emotionData"
+        [gradient]="false"
+        [legend]="showLegend"
+        [labels]="showLabels">
+      </ngx-charts-pie-chart>
+    </div>
   </div>
 </div>
