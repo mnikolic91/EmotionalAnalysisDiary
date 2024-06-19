@@ -1,0 +1,18 @@
+.navbar-nav.ml-auto {
+  margin-left: auto !important;
+  padding-right: 1rem;
+}
+
+.navbar-brand{
+  padding-left: 1rem;
+}
+
+.bg-custom {
+  background: darkorange;
+}
+
+.nav-link {
+  color: white;
+  font-size: 1.3em;
+  margin-left: 2em;
+}
