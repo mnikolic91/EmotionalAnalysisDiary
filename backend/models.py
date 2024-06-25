@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils import timezone
 
 class UserInput(models.Model):
     text = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name = 'user input'
@@ -20,7 +21,6 @@ class SentimentEmotion(models.Model):
     sadness_score = models.FloatField()
     anger_score = models.FloatField()
     fear_score = models.FloatField()
-    disgust_score = models.FloatField()
 
     class Meta:
         verbose_name = 'sentiment emotion'
