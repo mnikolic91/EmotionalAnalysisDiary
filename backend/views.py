@@ -1,14 +1,19 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from rest_framework import viewsets
 
 from .models import UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
-from backend.serializers import UserInputSerializer, SentimentEmotionSerializer, AverageWeekScoresSerializer, \
-    AverageMonthScoresSerializer
+from backend.serializers import UserInputCreateSerializer, SentimentEmotionSerializer, AverageWeekScoresSerializer, \
+    AverageMonthScoresSerializer, UserInputSerializer
 
 
 class UserInputViewSet(viewsets.ModelViewSet):
     queryset = UserInput.objects.all()
-    serializer_class = UserInputSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return UserInputCreateSerializer
+        else:
+            return UserInputSerializer
+
 
 
 class SentimentEmotionViewSet(viewsets.ModelViewSet):

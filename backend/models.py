@@ -21,6 +21,7 @@ class SentimentEmotion(models.Model):
     sadness_score = models.FloatField()
     anger_score = models.FloatField()
     fear_score = models.FloatField()
+    disgust_score = models.FloatField()
 
     class Meta:
         verbose_name = 'sentiment emotion'

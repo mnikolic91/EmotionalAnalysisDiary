@@ -1,11 +1,18 @@
 from rest_framework import serializers
+from rest_framework.utils.serializer_helpers import ReturnDict
 
 from backend import models
 from backend.models import UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
 from backend.nlp_utils import analyze_text
 
 
-class UserInputSerializer(serializers.Serializer):
+class UserInputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInput
+        fields = ['id', 'text', 'date']
+
+
+class UserInputCreateSerializer(serializers.Serializer):
     text = serializers.CharField()
 
     def create(self, validated_data):
@@ -27,6 +34,8 @@ class UserInputSerializer(serializers.Serializer):
     @property
     def data(self):
         instance = self.instance
+        if not instance:
+            return ReturnDict({}, serializer=self)
         emotion_instance = instance.sentimentemotion_set.first()
         return {'id': instance.id, 'text': instance.text, 'emotion_id': emotion_instance.id,
                 'sentiment_score': emotion_instance.sentiment_score, 'sentiment_label': emotion_instance.sentiment_label,
