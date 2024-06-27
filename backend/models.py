@@ -14,7 +14,7 @@ class UserInput(models.Model):
 
 
 class SentimentEmotion(models.Model):
-    user_input = models.ForeignKey(UserInput, on_delete=models.CASCADE)
+    user_input = models.OneToOneField(UserInput, on_delete=models.CASCADE)
     sentiment_score = models.FloatField()
     sentiment_label = models.CharField(max_length=20)
     joy_score = models.FloatField()

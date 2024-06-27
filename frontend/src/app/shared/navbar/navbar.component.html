@@ -10,23 +10,24 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">About Us</a>
+        <a class="nav-link" routerLink="/about">About Us</a>
       </li>
          <li class="nav-item">
-        <a class="nav-link" href="#">Your Posts</a>
+        <a class="nav-link" routerLink="/posts">Your Posts</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Your Statistics</a>
+        <a class="nav-link" routerLink="/info">Your Statistics</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <button class="btn btn-outline-light" type="button">
-          <i class="bi bi-journal-plus"></i> Add New
-        </button>
+        <button class="btn btn-outline-light" type="button" [routerLink]="['/input']">
+  <i class="bi bi-journal-plus"></i> Add New
+</button>
+
       </li>
     </ul>
   </div>
