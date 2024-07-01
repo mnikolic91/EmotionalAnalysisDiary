@@ -7,13 +7,14 @@ import {ApiService} from "../../services/api.service";
 import {ActivatedRoute} from "@angular/router";
 import {UserInput} from "../../models/user-input.model";
 import {NavbarComponent} from "../../shared/navbar/navbar.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
   standalone: true,
-  imports: [PostsComponent, NgxEditorModule, PieChartModule, FormsModule, BarChartModule, NavbarComponent]
+  imports: [PostsComponent, NgxEditorModule, PieChartModule, FormsModule, BarChartModule, NavbarComponent, NgIf]
 })
 export class MainComponent {
   apiService = inject(ApiService);

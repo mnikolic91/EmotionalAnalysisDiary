@@ -1,3 +1,13 @@
 .bottom-div {
   padding-bottom: 5%;
 }
+
+.main-div {
+  background-color: white;
+  margin: 4em auto;
+  padding: 1em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+  max-width: 90%;
+}
