@@ -1,6 +1,3 @@
-.bottom-div {
-  padding-bottom: 5%;
-}
 
 .main-div {
   background-color: white;
@@ -10,4 +7,70 @@
   border-radius: 8px;
   box-sizing: border-box;
   max-width: 90%;
+}
+
+.NgxEditor__Wrapper {
+  margin-top: 1em;
+}
+.results {
+  padding-top: 3em;
+}
+
+.results .emotion {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+  position: relative;
+}
+
+.results .emotion i {
+  font-size: 2em;
+  margin-right: 0.5em;
+}
+
+.results .emotion .emotion-text {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.results .emotion .vertical-line {
+  position: absolute;
+  left: 0;
+  bottom: -0.5em;
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+}
+
+
+.bi-brilliance {
+  color: #000000;
+}
+
+.bi-emoji-smile {
+  color: yellow;
+}
+
+.bi-emoji-frown {
+  color: blue;
+}
+
+.bi-emoji-angry {
+  color: red;
+}
+
+.bi-emoji-astonished {
+  color: purple;
+}
+
+.bi-emoji-expressionless {
+  color: green;
+}
+
+.bi-emoji-neutral {
+  color: grey;
+}
+
+.bottom-div {
+  padding-bottom: 5%;
 }

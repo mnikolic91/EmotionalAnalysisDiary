@@ -1,20 +1,19 @@
 import {Component, inject} from '@angular/core';
 import {PostsComponent} from '../posts/posts.component';
 import {Editor, NgxEditorModule} from "ngx-editor";
-import {BarChartModule, PieChartModule} from "@swimlane/ngx-charts";
 import {FormsModule} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {ActivatedRoute} from "@angular/router";
 import {UserInput} from "../../models/user-input.model";
 import {NavbarComponent} from "../../shared/navbar/navbar.component";
-import {NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
   standalone: true,
-  imports: [PostsComponent, NgxEditorModule, PieChartModule, FormsModule, BarChartModule, NavbarComponent, NgIf]
+  imports: [PostsComponent, NgxEditorModule, FormsModule, NavbarComponent, NgIf, NgClass, NgForOf]
 })
 export class MainComponent {
   apiService = inject(ApiService);
@@ -23,14 +22,14 @@ export class MainComponent {
   editor!: Editor;
   userInputText: string = '';
   postId: number | undefined;
-  sentimentData: any[] = [];
-  emotionData: any[] = [];
-  sentimentLabel: string | undefined;
-
-
-  colorScheme = 'forest';
-  showLegend = false;
-  showLabels = true;
+  emotionData: any[] = [
+    {name: 'Sentiment Score', value: 0},
+    {name: 'Joy Score', value: 0},
+    {name: 'Sadness Score', value: 0},
+    {name: 'Anger Score', value: 0},
+    {name: 'Fear Score', value: 0},
+    {name: 'Disgust Score', value: 0}
+  ];
 
   ngOnInit(): void {
     this.editor = new Editor();
@@ -51,8 +50,7 @@ export class MainComponent {
 
     this.apiService.createUserInput(newUserInput).subscribe(response => {
       console.log(response);
-      this.updateChartData(response);
-
+      this.updateEmotionData(response);
     });
   }
 
@@ -61,21 +59,33 @@ export class MainComponent {
     return doc.body.textContent || "";
   }
 
-  updateChartData(response: any) {
+updateEmotionData(response: any) {
     this.emotionData = [
-      {name: 'Sentiment Score', value: response.sentiment_score},
-      {name: 'Joy Score', value: response.joy_score},
-      {name: 'Sadness Score', value: response.sadness_score},
-      {name: 'Anger Score', value: response.anger_score},
-      {name: 'Fear Score', value: response.fear_score},
-      {name: 'Disgust Score', value: response.disgust_score}
+      {name: 'Sentiment Score', value: (response.sentiment_score * 100).toFixed(2)},
+      {name: 'Joy Score', value: (response.joy_score * 100).toFixed(2)},
+      {name: 'Sadness Score', value: (response.sadness_score * 100).toFixed(2)},
+      {name: 'Anger Score', value: (response.anger_score * 100).toFixed(2)},
+      {name: 'Fear Score', value: (response.fear_score * 100).toFixed(2)},
+      {name: 'Disgust Score', value: (response.disgust_score * 100).toFixed(2)}
     ];
+  }
 
-    this.sentimentData = [
-      {name: 'Sentiment Score', value: response.sentiment_score}
-    ];
-    this.sentimentLabel = response.sentiment_label;
-
-
+  getEmotionIcon(emotionName: string): string {
+    switch (emotionName) {
+      case 'Sentiment Score':
+        return 'bi bi-brilliance';
+      case 'Joy Score':
+        return 'bi bi-emoji-smile';
+      case 'Sadness Score':
+        return 'bi bi-emoji-frown';
+      case 'Anger Score':
+        return 'bi bi-emoji-angry';
+      case 'Fear Score':
+        return 'bi bi-emoji-astonished';
+      case 'Disgust Score':
+        return 'bi bi-emoji-expressionless';
+      default:
+        return 'bi bi-emoji-neutral';
+    }
   }
 }

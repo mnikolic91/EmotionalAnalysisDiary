@@ -1,12 +1,19 @@
 <div class="container main-div">
   <div class="row">
-    <div class="col-sm-3"></div>
-    <div class="col-sm"><h3>How was your day? :)</h3></div>
-    <div class="col-sm-2"></div>
+    <div class="col-sm-12">
+    </div>
   </div>
 
   <div class="row">
-    <div class="col-sm-6 offset-sm-1">
+    <div class="col-sm-3">
+<div id="list-example" class="list-group">
+  <a class="list-group-item list-group-item-action" href="#">Home</a>
+  <a class="list-group-item list-group-item-action" href="#">Statistics</a>
+  <a class="list-group-item list-group-item-action" href="#">More Info</a>
+</div>
+    </div>
+
+    <div class="col-sm-6">
       <div class="NgxEditor__Wrapper">
         <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
         <ngx-editor [editor]="editor" [(ngModel)]="userInputText" [disabled]="false"
@@ -15,31 +22,20 @@
       </div>
     </div>
 
-    <div class="col-sm-4 offset-sm-1">
-      <ngx-charts-bar-horizontal
-        [view]="[300, 80]"
-        [scheme]="colorScheme"
-        [results]="sentimentData"
-        [legend]="showLegend"
-        [showDataLabel]="showLabels">
-      </ngx-charts-bar-horizontal>
-      <div *ngIf="sentimentLabel" class="sentiment-label">
-        {{ sentimentLabel }}
-      </div>
-      <div class="row mt-3">
-        <ngx-charts-pie-chart
-          [view]="[450, 300]"
-          [scheme]="colorScheme"
-          [results]="emotionData"
-          [gradient]="false"
-          [legend]="showLegend"
-          [labels]="showLabels">
-        </ngx-charts-pie-chart>
+  <div class="col-sm-3">
+      <div class="results">
+        @for (emotion of emotionData; track emotion) {
+        <div class="emotion">
+          <i [ngClass]="getEmotionIcon(emotion.name)"></i>
+          <span class="emotion-text">{{emotion.name}}: {{emotion.value}}%</span>
+          <div class="vertical-line"></div>
+        </div>
+        }
       </div>
     </div>
   </div>
 
-    <div class="w-100 "></div>
-      <div class="col bottom-div">
-      </div>
+  <div class="w-100"></div>
+  <div class="col bottom-div"></div>
+
 </div>
