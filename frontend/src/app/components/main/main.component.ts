@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {PostsComponent} from '../posts/posts.component';
-import {Editor, NgxEditorModule} from "ngx-editor";
+import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 import {FormsModule} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {ActivatedRoute} from "@angular/router";
@@ -22,6 +22,7 @@ export class MainComponent {
   editor!: Editor;
   userInputText: string = '';
   postId: number | undefined;
+  moreInfoVisible: boolean = false;
   emotionData: any[] = [
     {name: 'Sentiment Score', value: 0},
     {name: 'Joy Score', value: 0},
@@ -30,6 +31,13 @@ export class MainComponent {
     {name: 'Fear Score', value: 0},
     {name: 'Disgust Score', value: 0}
   ];
+
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline'],
+    [{heading: ['h1','h2','h3','h4','h5','h6']}],
+    ['align_left', 'align_center', 'align_right', 'align_justify']
+  ]
 
   ngOnInit(): void {
     this.editor = new Editor();
@@ -59,7 +67,13 @@ export class MainComponent {
     return doc.body.textContent || "";
   }
 
-updateEmotionData(response: any) {
+
+  showMoreInfo(event: Event) {
+    event.preventDefault();
+    this.moreInfoVisible = !this.moreInfoVisible;
+  }
+
+  updateEmotionData(response: any) {
     this.emotionData = [
       {name: 'Sentiment Score', value: (response.sentiment_score * 100).toFixed(2)},
       {name: 'Joy Score', value: (response.joy_score * 100).toFixed(2)},

@@ -11,15 +11,20 @@
 
 .NgxEditor__Wrapper {
   margin-top: 1em;
+  border: 5px;
+  border-radius: 10px;
+  padding: 10px;
 }
+
 .results {
-  padding-top: 3em;
+  padding-top: 2em;
 }
+
 
 .results .emotion {
   display: flex;
   align-items: center;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   position: relative;
 }
 
@@ -30,7 +35,6 @@
 
 .results .emotion .emotion-text {
   font-size: 1em;
-  font-weight: bold;
 }
 
 .results .emotion .vertical-line {
@@ -74,3 +78,6 @@
 .bottom-div {
   padding-bottom: 5%;
 }
+
+
+

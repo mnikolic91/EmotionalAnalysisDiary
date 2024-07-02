@@ -5,31 +5,39 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-3">
-<div id="list-example" class="list-group">
-  <a class="list-group-item list-group-item-action" href="#">Home</a>
-  <a class="list-group-item list-group-item-action" href="#">Statistics</a>
-  <a class="list-group-item list-group-item-action" href="#">More Info</a>
-</div>
-    </div>
-
-    <div class="col-sm-6">
-      <div class="NgxEditor__Wrapper">
-        <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
-        <ngx-editor [editor]="editor" [(ngModel)]="userInputText" [disabled]="false"
-                    [placeholder]="'Dear diary...'"></ngx-editor>
-        <button (click)="onSubmit()">Submit</button>
+    <div class="col-sm-2">
+      <div id="list-example" class="list-group">
+        <a class="list-group-item list-group-item-action" href="/home">Home</a>
+        <a class="list-group-item list-group-item-action" href="/stats">Statistics</a>
+        <a class="list-group-item list-group-item-action" href="#" (click)="showMoreInfo($event)">Important Info</a>
+        @if (moreInfoVisible) {
+          <ul>
+          <li>Once you enter the text, it will <b>no longer be possible to edit it</b>.</li>
+          <li>Your entry will be recorded as today's daily entry.</li>
+          <li>The entry will be analyzed for emotional content.</li>
+          <li>You can submit only <b>one</b> diary post <b>per day</b>.</li>
+          </ul>
+        }
       </div>
     </div>
 
-  <div class="col-sm-3">
+    <div class="col-sm-8">
+      <div class="NgxEditor__Wrapper">
+        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
+        <ngx-editor [editor]="editor" [(ngModel)]="userInputText" [disabled]="false"
+                    [placeholder]="'Dear diary...'"></ngx-editor>
+        <button (click)="onSubmit()" class="btn btn-light">Submit</button>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
       <div class="results">
         @for (emotion of emotionData; track emotion) {
-        <div class="emotion">
-          <i [ngClass]="getEmotionIcon(emotion.name)"></i>
-          <span class="emotion-text">{{emotion.name}}: {{emotion.value}}%</span>
-          <div class="vertical-line"></div>
-        </div>
+          <div class="emotion">
+            <i [ngClass]="getEmotionIcon(emotion.name)"></i>
+            <span class="emotion-text">{{ emotion.name }}: {{ emotion.value }}%</span>
+            <div class="vertical-line"></div>
+          </div>
         }
       </div>
     </div>
