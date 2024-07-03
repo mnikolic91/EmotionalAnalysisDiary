@@ -23,6 +23,7 @@ export class MainComponent {
   userInputText: string = '';
   postId: number | undefined;
   moreInfoVisible: boolean = false;
+  errorMessage: string | undefined;
   emotionData: any[] = [
     {name: 'Sentiment Score', value: 0},
     {name: 'Joy Score', value: 0},
@@ -35,7 +36,7 @@ export class MainComponent {
   toolbar: Toolbar = [
     ['bold', 'italic'],
     ['underline'],
-    [{heading: ['h1','h2','h3','h4','h5','h6']}],
+    [{heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}],
     ['align_left', 'align_center', 'align_right', 'align_justify']
   ]
 
@@ -54,12 +55,24 @@ export class MainComponent {
   onSubmit() {
     const cleanedText = this.stripHtmlTags(this.userInputText.trim());
 
+    if (!this.hasMinimumWords(cleanedText, 10)) {
+      this.errorMessage = "Input must contain at least 10 words.";
+      return;
+    }
+
+    this.errorMessage = undefined;
+
     const newUserInput: UserInput = {text: cleanedText, date: new Date()};
 
     this.apiService.createUserInput(newUserInput).subscribe(response => {
       console.log(response);
       this.updateEmotionData(response);
     });
+  }
+
+  hasMinimumWords(text: string, minWords: number): boolean {
+    const wordCount = text.split(/\s+/).filter(word => word.trim().length > 0).length;
+    return wordCount >= minWords;
   }
 
   stripHtmlTags(input: string): string {

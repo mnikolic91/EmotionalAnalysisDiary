@@ -12,10 +12,10 @@
         <a class="list-group-item list-group-item-action" href="#" (click)="showMoreInfo($event)">Important Info</a>
         @if (moreInfoVisible) {
           <ul>
-          <li>Once you enter the text, it will <b>no longer be possible to edit it</b>.</li>
-          <li>Your entry will be recorded as today's daily entry.</li>
-          <li>The entry will be analyzed for emotional content.</li>
-          <li>You can submit only <b>one</b> diary post <b>per day</b>.</li>
+            <li>Once you enter the text, it will <b>no longer be possible to edit it</b>.</li>
+            <li>Your entry will be recorded as today's daily entry.</li>
+            <li>The entry will be analyzed for emotional content.</li>
+            <li>You can submit only <b>one</b> diary post <b>per day</b>.</li>
           </ul>
         }
       </div>
@@ -27,6 +27,9 @@
         <ngx-editor [editor]="editor" [(ngModel)]="userInputText" [disabled]="false"
                     [placeholder]="'Dear diary...'"></ngx-editor>
         <button (click)="onSubmit()" class="btn btn-light">Submit</button>
+        @if (errorMessage) {
+          <div class="error-message">{{ errorMessage }}</div>
+        }
       </div>
     </div>
 
