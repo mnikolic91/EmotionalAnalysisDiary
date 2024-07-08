@@ -37,6 +37,17 @@
   margin-right: 0.5em;
 }
 
+.col-cstm {
+  min-height: 800px;
+  overflow: hidden;
+  border-left: #e1e1e1;
+  border-top: white;
+  border-right: #e1e1e1;
+  border-bottom: white;
+  border-style: double;
+}
+
+
 .results .emotion .emotion-text {
   font-size: 1em;
 }
@@ -84,9 +95,6 @@
   color: grey;
 }
 
-.bottom-div {
-  padding-bottom: 5%;
-}
 
 
 

@@ -5,7 +5,7 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-2">
+    <div class="col-sm-2 col-cstm">
       <div id="list-example" class="list-group">
         <a class="list-group-item list-group-item-action" href="/home">Home</a>
         <a class="list-group-item list-group-item-action" href="/stats">Statistics</a>
@@ -33,12 +33,12 @@
       </div>
     </div>
 
-    <div class="col-sm-2">
+    <div class="col-sm-2 col-cstm">
       <div class="results">
         @for (emotion of emotionData; track emotion) {
           <div class="emotion">
             <i [ngClass]="getEmotionIcon(emotion.name)"></i>
-            <span class="emotion-text">{{ emotion.name }}: {{ emotion.value }}%</span>
+            <span class="emotion-text">{{ emotion.name }}: {{ emotion.value }}</span>
             <div class="vertical-line"></div>
           </div>
         }
@@ -46,7 +46,5 @@
     </div>
   </div>
 
-  <div class="w-100"></div>
-  <div class="col bottom-div"></div>
 
 </div>

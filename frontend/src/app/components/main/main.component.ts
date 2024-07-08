@@ -25,6 +25,7 @@ export class MainComponent {
   moreInfoVisible: boolean = false;
   errorMessage: string | undefined;
   emotionData: any[] = [
+    {name: 'Sentiment Label', value: 'neutral'},
     {name: 'Sentiment Score', value: 0},
     {name: 'Joy Score', value: 0},
     {name: 'Sadness Score', value: 0},
@@ -88,17 +89,20 @@ export class MainComponent {
 
   updateEmotionData(response: any) {
     this.emotionData = [
-      {name: 'Sentiment Score', value: (response.sentiment_score * 100).toFixed(2)},
-      {name: 'Joy Score', value: (response.joy_score * 100).toFixed(2)},
-      {name: 'Sadness Score', value: (response.sadness_score * 100).toFixed(2)},
-      {name: 'Anger Score', value: (response.anger_score * 100).toFixed(2)},
-      {name: 'Fear Score', value: (response.fear_score * 100).toFixed(2)},
-      {name: 'Disgust Score', value: (response.disgust_score * 100).toFixed(2)}
+      {name: 'Sentiment Label', value: response.sentiment_label},
+      {name: 'Sentiment Score', value: (response.sentiment_score * 100).toFixed(2)+ '%'},
+      {name: 'Joy Score', value: (response.joy_score * 100).toFixed(2) + '%'},
+      {name: 'Sadness Score', value: (response.sadness_score * 100).toFixed(2)+ '%'},
+      {name: 'Anger Score', value: (response.anger_score * 100).toFixed(2)+ '%'},
+      {name: 'Fear Score', value: (response.fear_score * 100).toFixed(2)+ '%'},
+      {name: 'Disgust Score', value: (response.disgust_score * 100).toFixed(2)+ '%'}
     ];
   }
 
   getEmotionIcon(emotionName: string): string {
     switch (emotionName) {
+      case 'Sentiment Label':
+        return 'bi bi-activity';
       case 'Sentiment Score':
         return 'bi bi-brilliance';
       case 'Joy Score':
