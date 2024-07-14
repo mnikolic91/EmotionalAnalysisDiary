@@ -11,5 +11,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('backend.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    # path('nlp-analysis/', views.NLPAnalysisView.as_view(), name='nlp-analysis'),
 ]

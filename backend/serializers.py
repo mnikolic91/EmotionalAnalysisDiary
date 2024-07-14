@@ -48,14 +48,3 @@ class SentimentEmotionSerializer(serializers.ModelSerializer):
         model = SentimentEmotion
         fields = '__all__'
 
-
-class AverageWeekScoresSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AverageWeekScores
-        fields = '__all__'
-
-
-class AverageMonthScoresSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AverageMonthScores
-        fields = '__all__'
