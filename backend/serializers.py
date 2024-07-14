@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
 from backend import models
-from backend.models import UserInput, SentimentEmotion, AverageWeekScores, AverageMonthScores
+from backend.models import UserInput, SentimentEmotion
 from backend.nlp_utils import analyze_text
 
 
