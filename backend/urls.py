@@ -14,13 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+from backend.views import AverageWeekScoresViewSet, AverageMonthScoresViewSet
 from backend.viewsets.router import router
 from django.urls import include
 from django.urls import path
 
 
 app_name = 'backend'
+
+router.register(r'averageweek', AverageWeekScoresViewSet, basename='averageweek')
+router.register(r'averagemonth', AverageMonthScoresViewSet, basename='averagemonth')
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

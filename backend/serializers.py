@@ -1,16 +1,20 @@
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
-
 from backend import models
 from backend.models import UserInput, SentimentEmotion
 from backend.nlp_utils import analyze_text
+from datetime import datetime
 
+class DateField(serializers.DateField):
+    def to_representation(self, value):
+        if isinstance(value, datetime):
+            value = value.date()
+        return super().to_representation(value)
 
 class UserInputSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInput
         fields = ['id', 'text', 'date']
-
 
 class UserInputCreateSerializer(serializers.Serializer):
     text = serializers.CharField()
@@ -42,9 +46,25 @@ class UserInputCreateSerializer(serializers.Serializer):
                 'joy_score': emotion_instance.joy_score, 'sadness_score': emotion_instance.sadness_score, 'anger_score': emotion_instance.anger_score,
                 'fear_score': emotion_instance.fear_score, 'disgust_score': emotion_instance.disgust_score}
 
-
 class SentimentEmotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SentimentEmotion
         fields = '__all__'
 
+class WeeklyAverageSerializer(serializers.Serializer):
+    week = DateField()
+    avg_sentiment_score = serializers.FloatField()
+    avg_joy_score = serializers.FloatField()
+    avg_sadness_score = serializers.FloatField()
+    avg_anger_score = serializers.FloatField()
+    avg_fear_score = serializers.FloatField()
+    avg_disgust_score = serializers.FloatField()
+
+class MonthlyAverageSerializer(serializers.Serializer):
+    month = DateField()
+    avg_sentiment_score = serializers.FloatField()
+    avg_joy_score = serializers.FloatField()
+    avg_sadness_score = serializers.FloatField()
+    avg_anger_score = serializers.FloatField()
+    avg_fear_score = serializers.FloatField()
+    avg_disgust_score = serializers.FloatField()
