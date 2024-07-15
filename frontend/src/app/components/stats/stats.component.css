@@ -1,0 +1,22 @@
+.main-div {
+  background-color: white;
+  margin: 4em auto;
+  padding: 1em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+  max-width: 90%;
+  min-height: 800px;
+  overflow: auto;
+}
+
+.col-cstm {
+  min-height: 800px;
+  overflow: hidden;
+  border-left: #e1e1e1;
+  border-top: white;
+  border-right: #e1e1e1;
+  border-bottom: white;
+  border-style: double;
+}
+

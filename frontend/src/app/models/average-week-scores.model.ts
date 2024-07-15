@@ -1,6 +1,5 @@
 export interface AverageWeekScores {
   week_start_date: Date;
-  week_end_date: Date;
   average_sentiment: number;
   average_joy_score: number;
   average_sadness_score: number;
