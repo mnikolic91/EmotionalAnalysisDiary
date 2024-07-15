@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {PostsComponent} from '../posts/posts.component';
+import {StatsComponent} from '../stats/stats.component';
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 import {FormsModule} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
@@ -13,7 +13,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
   standalone: true,
-  imports: [PostsComponent, NgxEditorModule, FormsModule, NavbarComponent, NgIf, NgClass, NgForOf]
+  imports: [StatsComponent, NgxEditorModule, FormsModule, NavbarComponent, NgIf, NgClass, NgForOf]
 })
 export class MainComponent {
   apiService = inject(ApiService);
