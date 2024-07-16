@@ -15,14 +15,14 @@ export class ApiService {
   http = inject(HttpClient);
   private USERINPUT_URL='/api/user-input/';
 
-  getUserInputs(paramsObj: { text: string, page?: number, search: string }): Observable<Page<UserInput>> {
+  getUserInputs(paramsObj: { text: string, page?: number, search: string }): Observable<UserInput[]> {
     let params = new HttpParams();
     Object.keys(paramsObj).forEach(key => {
       if (Boolean(paramsObj[key])) {
         params = params.append(key, paramsObj[key].toString());
       }
     });
-    return this.http.get<Page<UserInput>>(this.USERINPUT_URL, {params}).pipe(
+    return this.http.get<UserInput[]>(this.USERINPUT_URL, {params}).pipe(
       catchError(err => handleErrors(err))
     );
   }

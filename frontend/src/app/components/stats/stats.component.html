@@ -10,21 +10,19 @@
       <div class="table-responsive-lg mt-5">
         <table class="table table-hover table-wrap custom-scroll animated fast fadeInRight borderless">
           <thead class="table-light border-secondary-subtle">
-            <tr>
-              <th>Text</th>
-              <th>Date</th>
-            </tr>
+          <tr>
+            <th>Date</th>
+            <th>Text</th>
+          </tr>
           </thead>
           <tbody>
             @if (inputs$ | async; as inputs) {
-              @if (inputs.results?.length > 0) {
-                @for (input of inputs.results; track input.id) {
-                  <tr>
-                    <td>{{ input.text }}</td>
-                    <td>{{ input.date | date }}</td>
-                  </tr>
-                }
-              } @else {
+              @for (input of inputs; track input.id) {
+                <tr>
+                  <td>{{ input.date | date:'dd.MM.yyyy' }}</td>
+                  <td>{{ input.text | truncateWords:30 }}</td>
+                </tr>
+              } @empty {
                 <tr>
                   <td colspan="2" class="text-center">
                     <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No user inputs found</h5>
@@ -42,33 +40,6 @@
           </tbody>
         </table>
       </div>
-
-      @if (inputs$ | async; as inputs) {
-        @if (inputs.results?.length > 0) {
-          <div class="col mt-5 offset-9">
-            <span class="badge custom-badge rounded-pill">
-              Predmeti: {{ (page - 1) * pageSize + 1 }} - {{ (page - 1) * pageSize + inputs.results.length }}
-              od ukupno {{ inputs.count }}
-            </span>
-          </div>
-
-          <div class="col mt-5">
-            <div class="d-flex justify-content-end">
-              <ngb-pagination
-                [(page)]="page"
-                [size]="'sm'"
-                [maxSize]="1"
-                [rotate]="true"
-                [ellipses]="false"
-                [pageSize]="pageSize"
-                [collectionSize]="inputs?.count"
-                (pageChange)="getUserInputs({text: inputId, page: page, search: searchInput.value})"
-              >
-              </ngb-pagination>
-            </div>
-          </div>
-        }
-      }
     </div>
   </div>
 </div>
