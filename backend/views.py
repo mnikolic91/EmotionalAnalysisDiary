@@ -21,6 +21,12 @@ class SentimentEmotionViewSet(viewsets.ModelViewSet):
     queryset = SentimentEmotion.objects.all()
     serializer_class = SentimentEmotionSerializer
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if input_id := self.request.query_params.get('input_id'):
+            queryset = queryset.filter(user_input=input_id)
+        return queryset
+
 
 class AverageWeekScoresViewSet(viewsets.ViewSet):
     def list(self, request):
