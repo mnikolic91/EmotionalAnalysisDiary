@@ -7,6 +7,32 @@
       </div>
     </div>
     <div class="col-sm-10">
+
+
+      <div class="mb-3">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <button class="btn btn-link">All User Inputs</button>
+            @if (inputs$ | async; as inputs) {
+              <span class="badge bg-primary badge-pill">{{ inputs.length }}</span>
+            }
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <button class="btn btn-link">Average Week Scores</button>
+            @if (averageWeekScores$ | async; as averageWeekScores) {
+              <span class="badge bg-primary badge-pill">{{ averageWeekScores.length }}</span>
+            }
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <button class="btn btn-link">Average Month Scores</button>
+             @if (averageMonthScores$ | async; as averageMonthScores) {
+            <span class="badge bg-primary badge-pill">{{ averageMonthScores.length }}</span>
+             }
+          </li>
+        </ul>
+      </div>
+
+      <!-- Table Section -->
       <div class="table-responsive-lg mt-5">
         <table class="table table-hover table-wrap custom-scroll animated fast fadeInRight borderless">
           <thead class="table-light border-secondary-subtle">
