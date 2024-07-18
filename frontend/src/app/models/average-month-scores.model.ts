@@ -1,9 +1,9 @@
 export interface AverageMonthScores {
   month: string;
-  average_sentiment: number;
-  average_joy_score: number;
-  average_sadness_score: number;
-  average_anger_score: number;
-  average_fear_score: number;
-  average_disgust_score: number;
+  avg_sentiment_score: number;
+  avg_joy_score: number;
+  avg_sadness_score: number;
+  avg_anger_score: number;
+  avg_fear_score: number;
+  avg_disgust_score: number;
 }

@@ -1,14 +1,14 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {AsyncPipe, DatePipe} from '@angular/common';
-import {RouterLink} from '@angular/router';
-import {NgbPagination} from '@ng-bootstrap/ng-bootstrap';
-import {ApiService} from '../../services/api.service';
-import {delay, Observable, share, Subject} from 'rxjs';
-import {UserInput} from '../../models/user-input.model';
-import {TruncateWordsPipe} from "../../truncate-words.pipe";
-import {AverageWeekScores} from '../../models/average-week-scores.model';
-import {AverageMonthScores} from '../../models/average-month-scores.model';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService } from '../../services/api.service';
+import { delay, Observable, share, Subject } from 'rxjs';
+import { UserInput } from '../../models/user-input.model';
+import { TruncateWordsPipe } from "../../truncate-words.pipe";
+import { AverageWeekScores } from '../../models/average-week-scores.model';
+import { AverageMonthScores } from '../../models/average-month-scores.model';
 
 @Component({
   selector: 'app-stats',
@@ -26,7 +26,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   averageWeekScores$: Observable<AverageWeekScores[]>;
   averageMonthScores$: Observable<AverageMonthScores[]>;
 
-
+  currentData: string = 'inputs';  // Default to 'inputs'
   destroy$ = new Subject<void>();
   searchInput = new FormControl('');
   page = 1;
@@ -62,4 +62,9 @@ export class StatsComponent implements OnInit, OnDestroy {
       share()
     );
   }
+
+  showData(dataType: string): void {
+    this.currentData = dataType;
+  }
+
 }
