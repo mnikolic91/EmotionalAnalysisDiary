@@ -13,6 +13,7 @@ import {handleErrors} from "../common/api_errors";
 export class ApiService {
   http = inject(HttpClient);
   private USERINPUT_URL = '/api/user-input/';
+  private SENTIMENT_EMOTION_URL = '/api/sentimentemotion/';
   private AVERAGE_WEEK_URL = '/api/averageweek/';
   private AVERAGE_MONTH_URL = '/api/averagemonth/';
 
@@ -23,52 +24,43 @@ export class ApiService {
         params = params.append(key, paramsObj[key].toString());
       }
     });
-    return this.http.get<UserInput[]>(this.USERINPUT_URL, { params }).pipe(
+    return this.http.get<UserInput[]>(this.USERINPUT_URL, {params}).pipe(
       catchError(err => handleErrors(err))
     );
   }
 
-  getUserInput(): Observable<UserInput[]> {
-    return this.http.get<UserInput[]>(this.USERINPUT_URL);
+ getSentimentEmotionByUserInputId(userInputId: number): Observable<SentimentEmotion[]> {
+    return this.http.get<SentimentEmotion[]>(`${this.SENTIMENT_EMOTION_URL}?user_input=${userInputId}`).pipe(
+      catchError(err => handleErrors(err))
+    );
   }
 
   createUserInput(userInput: UserInput): Observable<UserInput> {
     return this.http.post<UserInput>(this.USERINPUT_URL, userInput);
   }
 
-  getSentimentEmotions(id: number | undefined): Observable<SentimentEmotion[]> {
-    return this.http.get<SentimentEmotion[]>(`/api/sentimentemotion/`);
-  }
-
-  getAverageWeekScores(paramsObj: { page?: number}): Observable<AverageWeekScores[]> {
+  getAverageWeekScores(paramsObj: { page?: number }): Observable<AverageWeekScores[]> {
     let params = new HttpParams();
     Object.keys(paramsObj).forEach(key => {
       if (Boolean(paramsObj[key])) {
         params = params.append(key, paramsObj[key].toString());
       }
     });
-    return this.http.get<AverageWeekScores[]>(this.AVERAGE_WEEK_URL, { params }).pipe(
+    return this.http.get<AverageWeekScores[]>(this.AVERAGE_WEEK_URL, {params}).pipe(
       catchError(err => handleErrors(err))
     );
   }
 
-  getAverageWeekScore(): Observable<AverageWeekScores[]> {
-    return this.http.get<AverageWeekScores[]>(this.AVERAGE_WEEK_URL);
-  }
-
-  getAverageMonthScores(paramsObj: { page?: number}): Observable<AverageMonthScores[]> {
+  getAverageMonthScores(paramsObj: { page?: number }): Observable<AverageMonthScores[]> {
     let params = new HttpParams();
     Object.keys(paramsObj).forEach(key => {
       if (Boolean(paramsObj[key])) {
         params = params.append(key, paramsObj[key].toString());
       }
     });
-    return this.http.get<AverageMonthScores[]>(this.AVERAGE_MONTH_URL, { params }).pipe(
+    return this.http.get<AverageMonthScores[]>(this.AVERAGE_MONTH_URL, {params}).pipe(
       catchError(err => handleErrors(err))
     );
   }
 
-  getAverageMonthScore(): Observable<AverageMonthScores[]> {
-    return this.http.get<AverageMonthScores[]>(this.AVERAGE_MONTH_URL);
-  }
 }

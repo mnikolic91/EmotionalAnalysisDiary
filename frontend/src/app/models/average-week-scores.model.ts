@@ -1,5 +1,5 @@
 export interface AverageWeekScores {
-  week: Date;
+  week: string;
   avg_sentiment_score: number;
   avg_joy_score: number;
   avg_sadness_score: number;

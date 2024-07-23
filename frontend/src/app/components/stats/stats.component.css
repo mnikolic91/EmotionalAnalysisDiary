@@ -20,3 +20,14 @@
   border-style: double;
 }
 
+.cstm-charts {
+  margin-bottom: 30px;
+}
+
+.cstm-charts ngx-charts-line-chart,
+.cstm-charts ngx-charts-pie-chart {
+  width: 100%;
+  height: 400px;
+}
+
+

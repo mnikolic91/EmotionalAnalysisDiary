@@ -7,37 +7,75 @@
       </div>
     </div>
     <div class="col-sm-10">
-      <div class="cstm-charts offset-2 pb-5">
-      <ngx-charts-bar-vertical
-        [view]="view"
-        [results]="chartData"
-        [gradient]="gradient"
-        [xAxis]="showXAxis"
-        [yAxis]="showYAxis"
-        [legend]="showLegend"
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        [animations]="animations">
-      </ngx-charts-bar-vertical>
-      </div>
+      @if (selectedDetails) {
+        <div class="cstm-charts offset-2 pb-5">
+          <ngx-charts-line-chart
+            [view]="view"
+            [results]="sentimentData"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [xAxisLabel]="'Date'"
+            [showYAxisLabel]="true"
+            [yAxisLabel]="'Sentiment Score'"
+            [animations]="true">
+          </ngx-charts-line-chart>
+        </div>
+
+        <div class="cstm-charts offset-2 pb-5">
+          <ngx-charts-pie-chart
+            [view]="view"
+            [results]="emotionData"
+            [legend]="true"
+            [doughnut]="true"
+            [animations]="true">
+          </ngx-charts-pie-chart>
+        </div>
+      } @else {
+
+
+        <div class="cstm-charts offset-2 pb-5">
+          <ngx-charts-bar-vertical
+            [view]="view"
+            [results]="chartData"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [animations]="animations">
+          </ngx-charts-bar-vertical>
+        </div>
+      }
+
+
+
       <div class="mb-3">
         <ul class="list-group list-group-horizontal">
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <button class="btn btn-link btn-l link-dark" style="text-decoration: none" (click)="showData('inputs')">All User Inputs</button>
+            <button class="btn btn-link btn-l link-dark" style="text-decoration: none" (click)="showData('inputs')">All
+              User Inputs
+            </button>
             @if (inputs$ | async; as inputs) {
               <span class="badge bg-secondary badge-pill">{{ inputs.length }}</span>
             }
           </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <button class="btn btn-link link-dark" style="text-decoration: none" (click)="showData('averageWeekScores')">Average Week Scores</button>
+            <button class="btn btn-link link-dark" style="text-decoration: none"
+                    (click)="showData('averageWeekScores')">Average Week Scores
+            </button>
             @if (averageWeekScores$ | async; as averageWeekScores) {
               <span class="badge bg-secondary badge-pill">{{ averageWeekScores.length }}</span>
             }
           </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
-            <button class="btn btn-link link-dark" style="text-decoration: none" (click)="showData('averageMonthScores')">Average Month Scores</button>
+            <button class="btn btn-link link-dark" style="text-decoration: none"
+                    (click)="showData('averageMonthScores')">Average Month Scores
+            </button>
             @if (averageMonthScores$ | async; as averageMonthScores) {
               <span class="badge bg-secondary badge-pill">{{ averageMonthScores.length }}</span>
             }
@@ -57,8 +95,16 @@
             @if (currentData === 'inputs' && inputs$ | async; as inputs) {
               @for (input of inputs; track input.id) {
                 <tr>
-                  <td>{{ input.date | date:'dd.MM.yyyy' }}</td>
-                  <td>{{ input.text | truncateWords:30 }}</td>
+                  <td>
+                    <a (click)="showDetails(input.id)">
+                      {{ input.date | date:'dd.MM.yyyy' }}
+                    </a>
+                  </td>
+                  <td>
+                    <a (click)="showDetails(input.id)">
+                      {{ input.text | truncateWords:30 }}
+                    </a>
+                  </td>
                 </tr>
               } @empty {
                 <tr>
@@ -67,43 +113,56 @@
                   </td>
                 </tr>
               }
-            } @if (currentData === 'averageWeekScores' && averageWeekScores$ | async; as averageWeekScores) {
+            }
+
+            @if (currentData === 'averageWeekScores' && averageWeekScores$ | async; as averageWeekScores) {
               @for (score of averageWeekScores; track score.week) {
                 <tr>
-                  <td>{{ score.week | date:'dd.MM.yyyy' }}</td>
-                  <td>{{ score.avg_sentiment_score }}</td>
+                  <td>
+                    <a (click)="showDetails(score.week)">
+                      {{ score.week | date:'dd.MM.yyyy' }}
+                    </a>
+                  </td>
+                  <td>
+                    <a (click)="showDetails(score.week)">
+                      {{ score.avg_sentiment_score }}
+                    </a>
+                  </td>
                 </tr>
               } @empty {
                 <tr>
                   <td colspan="2" class="text-center">
-                  <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No average week scores found</h5>
-                </td>
-              </tr>
+                    <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No average week scores found</h5>
+                  </td>
+                </tr>
+              }
             }
-          } @if (currentData === 'averageMonthScores' && averageMonthScores$ | async; as averageMonthScores) {
-            @for (score of averageMonthScores; track score.month) {
-              <tr>
-                <td>{{ score.month | date:'dd.MM.yyyy' }}</td>
-                <td>{{ score.avg_sentiment_score }}</td>
-              </tr>
-            } @empty {
-              <tr>
-                <td colspan="2" class="text-center">
-                  <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No average month scores found</h5>
-                </td>
-              </tr>
+
+            @if (currentData === 'averageMonthScores' && averageMonthScores$ | async; as averageMonthScores) {
+              @for (score of averageMonthScores; track score.month) {
+                <tr>
+                  <td>
+                    <a (click)="showDetails(score.month)">
+                      {{ score.month | date:'dd.MM.yyyy' }}
+                    </a>
+                  </td>
+                  <td>
+                    <a (click)="showDetails(score.month)">
+                      {{ score.avg_sentiment_score }}
+                    </a>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="2" class="text-center">
+                    <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No average month scores found</h5>
+                  </td>
+                </tr>
+              }
             }
-          } @else {
-            <tr>
-              <td colspan="2" class="text-center">
-                <i class="fa fa-spinner fa-3x animated rotateIn infinite"></i>
-                <h5 class="my-2">Loading data</h5>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </div>
