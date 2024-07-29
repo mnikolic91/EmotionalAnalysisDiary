@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h4 class="modal-title">Emotion and Sentiment Stats</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  @if(fullText){
+  <div>
+    <h5>Full Text</h5>
+    <p>{{ fullText }}</p>
+  </div>
+  }
+  @if(sentimentLabel && sentimentScore !== null) {
+  <div>
+    <h5>Sentiment</h5>
+    <span>{{ sentimentLabel }} ({{ sentimentScore | number:'1.0-2' }}%)</span>
+  </div>
+  }
+  @if(emotionData.length > 0) {
+  <div>
+    <ngx-charts-pie-chart
+      [view]="[300, 400]"
+      [results]="emotionData"
+      [legend]="true"
+      [doughnut]="true"
+      [animations]="true">
+    </ngx-charts-pie-chart>
+  </div>
+  }
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+</div>

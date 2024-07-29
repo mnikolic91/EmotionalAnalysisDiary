@@ -7,33 +7,6 @@
       </div>
     </div>
     <div class="col-sm-10">
-      @if (selectedDetails) {
-        <div class="cstm-charts offset-2 pb-5">
-          <ngx-charts-line-chart
-            [view]="view"
-            [results]="sentimentData"
-            [xAxis]="true"
-            [yAxis]="true"
-            [legend]="true"
-            [showXAxisLabel]="true"
-            [xAxisLabel]="'Date'"
-            [showYAxisLabel]="true"
-            [yAxisLabel]="'Sentiment Score'"
-            [animations]="true">
-          </ngx-charts-line-chart>
-        </div>
-
-        <div class="cstm-charts offset-2 pb-5">
-          <ngx-charts-pie-chart
-            [view]="view"
-            [results]="emotionData"
-            [legend]="true"
-            [doughnut]="true"
-            [animations]="true">
-          </ngx-charts-pie-chart>
-        </div>
-      } @else {
-
 
         <div class="cstm-charts offset-2 pb-5">
           <ngx-charts-bar-vertical
@@ -50,8 +23,6 @@
             [animations]="animations">
           </ngx-charts-bar-vertical>
         </div>
-      }
-
 
 
       <div class="mb-3">
@@ -105,7 +76,11 @@
                       {{ input.text | truncateWords:30 }}
                     </a>
                   </td>
+                  <td>
+                    <button (click)="showDetails(input.id)">Details</button>
+                  </td>
                 </tr>
+
               } @empty {
                 <tr>
                   <td colspan="2" class="text-center">
@@ -114,7 +89,6 @@
                 </tr>
               }
             }
-
             @if (currentData === 'averageWeekScores' && averageWeekScores$ | async; as averageWeekScores) {
               @for (score of averageWeekScores; track score.week) {
                 <tr>

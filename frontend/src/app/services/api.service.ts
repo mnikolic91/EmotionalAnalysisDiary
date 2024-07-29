@@ -29,11 +29,12 @@ export class ApiService {
     );
   }
 
- getSentimentEmotionByUserInputId(userInputId: number): Observable<SentimentEmotion[]> {
-    return this.http.get<SentimentEmotion[]>(`${this.SENTIMENT_EMOTION_URL}?user_input=${userInputId}`).pipe(
-      catchError(err => handleErrors(err))
-    );
-  }
+getSentimentEmotionByUserInputId(userInputId: number): Observable<SentimentEmotion[]> {
+  return this.http.get<SentimentEmotion[]>(`${this.SENTIMENT_EMOTION_URL}?user_input=${userInputId}`).pipe(
+    catchError(err => handleErrors(err))
+  );
+}
+
 
   createUserInput(userInput: UserInput): Observable<UserInput> {
     return this.http.post<UserInput>(this.USERINPUT_URL, userInput);
