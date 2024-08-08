@@ -57,11 +57,19 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.getAverageWeekScores({page: this.page});
     this.getAverageMonthScores({page: this.page});
     this.updateChartData('inputs');
+    this.loadEmotionData();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  loadEmotionData(): void {
+    this.apiService.getAllSentimentEmotionData().subscribe(data => {
+      this.emotionData = data;
+      console.log(this.emotionData);
+    });
   }
 
   getUserInputs(param: { page: number }): void {
@@ -118,21 +126,27 @@ export class StatsComponent implements OnInit, OnDestroy {
   showDetails(id: number | string): void {
     if (this.currentData === 'inputs') {
       this.inputs$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-        const details = data.find(input => input.id === id);
-        if (details) {
-          this.selectedDetails = details;
-          this.apiService.getSentimentEmotionByUserInputId(details.id).pipe(takeUntil(this.destroy$)).subscribe(emotionData => {
-            if (emotionData.length > 0) {
-              const sentimentLabel = emotionData[0].sentiment_label;
-              const sentimentScore = emotionData[0].sentiment_score;
+        const inputDetails = data.find(input => input.id === id);
+        if (inputDetails) {
+          this.selectedDetails = inputDetails;
+
+          this.apiService.getAllSentimentEmotionData().pipe(takeUntil(this.destroy$)).subscribe(emotionData => {
+            const emotionDetails = emotionData.find(emotion => emotion.user_input === inputDetails.id);
+
+            if (emotionDetails) {
+              const sentimentLabel = emotionDetails.sentiment_label;
+              const sentimentScore = emotionDetails.sentiment_score;
               const emotionDataChart = [
-                {name: 'Joy', value: emotionData[0].joy_score},
-                {name: 'Sadness', value: emotionData[0].sadness_score},
-                {name: 'Anger', value: emotionData[0].anger_score},
-                {name: 'Fear', value: emotionData[0].fear_score},
-                {name: 'Disgust', value: emotionData[0].disgust_score}
+                {name: 'Joy', value: emotionDetails.joy_score},
+                {name: 'Sadness', value: emotionDetails.sadness_score},
+                {name: 'Anger', value: emotionDetails.anger_score},
+                {name: 'Fear', value: emotionDetails.fear_score},
+                {name: 'Disgust', value: emotionDetails.disgust_score}
               ];
-              this.openModal(sentimentLabel, sentimentScore, emotionDataChart, details.text);
+
+              this.apiService.getSentimentEmotionByUserInputId(emotionDetails.id).pipe(takeUntil(this.destroy$)).subscribe(() => {
+                this.openModal(sentimentLabel, sentimentScore, emotionDataChart, inputDetails.text);
+              });
             }
           });
         }
