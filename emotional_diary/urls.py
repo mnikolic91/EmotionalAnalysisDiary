@@ -1,11 +1,5 @@
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
-from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView
-
-from backend import views
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
