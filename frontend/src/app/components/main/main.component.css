@@ -10,7 +10,6 @@
   overflow: auto;
 }
 
-
 .NgxEditor__Wrapper {
   margin-top: 1em;
   border: 5px;
@@ -18,11 +17,9 @@
   padding: 1em;
 }
 
-
 .results {
   padding-top: 2em;
 }
-
 
 .results .emotion {
   display: flex;
@@ -46,7 +43,6 @@
   border-style: double;
 }
 
-
 .results .emotion .emotion-text {
   font-size: 1em;
 }
@@ -64,7 +60,6 @@
   color: red;
   margin-top: 10px;
 }
-
 
 .bi-brilliance {
   color: #000000;

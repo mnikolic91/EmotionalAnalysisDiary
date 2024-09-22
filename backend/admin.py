@@ -5,5 +5,4 @@ from backend.models import UserInput, SentimentEmotion
 admin.site.register([
     UserInput,
     SentimentEmotion,
-
 ])

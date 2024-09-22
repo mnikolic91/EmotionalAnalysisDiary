@@ -19,7 +19,6 @@ from backend.viewsets.router import router
 from django.urls import include
 from django.urls import path
 
-
 app_name = 'backend'
 
 router.register(r'averageweek', AverageWeekScoresViewSet, basename='averageweek')

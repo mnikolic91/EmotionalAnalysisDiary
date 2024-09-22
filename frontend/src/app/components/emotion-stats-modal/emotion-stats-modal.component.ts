@@ -20,5 +20,4 @@ export class EmotionStatsModalComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

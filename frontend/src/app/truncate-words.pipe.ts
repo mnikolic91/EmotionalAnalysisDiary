@@ -12,6 +12,4 @@ export class TruncateWordsPipe implements PipeTransform {
     if (words.length <= limit) return value;
     return words.slice(0, limit).join(' ') + '...';
   }
-
-
 }

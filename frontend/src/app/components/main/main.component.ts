@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {StatsComponent} from '../stats/stats.component';
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 import {FormsModule} from "@angular/forms";
@@ -15,7 +15,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
   standalone: true,
   imports: [StatsComponent, NgxEditorModule, FormsModule, NavbarComponent, NgIf, NgClass, NgForOf]
 })
-export class MainComponent {
+export class MainComponent implements OnInit, OnDestroy{
   apiService = inject(ApiService);
   route = inject(ActivatedRoute);
 
@@ -80,7 +80,6 @@ export class MainComponent {
     const doc = new DOMParser().parseFromString(input, 'text/html');
     return doc.body.textContent || "";
   }
-
 
   showMoreInfo(event: Event) {
     event.preventDefault();

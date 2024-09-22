@@ -16,7 +16,6 @@ class UserInputViewSet(viewsets.ModelViewSet):
         else:
             return UserInputSerializer
 
-
 class SentimentEmotionViewSet(viewsets.ModelViewSet):
     queryset = SentimentEmotion.objects.all()
     serializer_class = SentimentEmotionSerializer

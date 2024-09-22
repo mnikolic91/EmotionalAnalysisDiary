@@ -1,4 +1,3 @@
-
 export interface SentimentEmotion {
   id: number;
   sentiment_score: number;
