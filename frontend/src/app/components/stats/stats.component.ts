@@ -28,15 +28,12 @@ export class StatsComponent implements OnInit, OnDestroy {
   inputs$: Observable<UserInput[]>;
   averageWeekScores$: Observable<AverageWeekScores[]>;
   averageMonthScores$: Observable<AverageMonthScores[]>;
-  selectedItemDetails$: Observable<any>;
 
   selectedDetails: any = null;
-  sentimentData: any[] = [];
   emotionData: any[] = [];
 
   currentData: string = 'inputs';
   destroy$ = new Subject<void>();
-  searchInput = new FormControl('');
   page = 1;
 
   view: [number, number] = [700, 400];
@@ -100,25 +97,51 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   updateChartData(dataType: string): void {
     if (dataType === 'inputs') {
-      this.inputs$.subscribe(data => {
-        this.chartData = data.map(input => ({
-          name: input.date,
-          value: input.text.length
-        }));
+      this.inputs$.pipe(takeUntil(this.destroy$)).subscribe(inputs => {
+        this.apiService.getAllSentimentEmotionData().pipe(takeUntil(this.destroy$)).subscribe(emotionData => {
+          const chartSeries = inputs.map(input => {
+            const emotionDetails = emotionData.find(emotion => emotion.user_input === input.id);
+            if (emotionDetails) {
+              return {
+                name: new Date(input.date),
+                value: emotionDetails.sentiment_score
+              };
+            } else {
+              return null;
+            }
+          }).filter(dataPoint => dataPoint !== null);
+          chartSeries.sort((a, b) => a.name.getTime() - b.name.getTime());
+          this.chartData = [
+            {
+              name: 'Sentiment Score',
+              series: chartSeries
+            }
+          ];
+        });
       });
     } else if (dataType === 'averageWeekScores') {
-      this.averageWeekScores$.subscribe(data => {
-        this.chartData = data.map(score => ({
-          name: score.week,
-          value: score.avg_sentiment_score
-        }));
+      this.averageWeekScores$.pipe(takeUntil(this.destroy$)).subscribe(weekScores => {
+        this.chartData = [
+          {
+            name: 'Sentiment',
+            series: weekScores.map(score => ({
+              name: new Date(score.week),
+              value: score.avg_sentiment_score
+            }))
+          }
+        ];
       });
     } else if (dataType === 'averageMonthScores') {
-      this.averageMonthScores$.subscribe(data => {
-        this.chartData = data.map(score => ({
-          name: score.month,
-          value: score.avg_sentiment_score
-        }));
+      this.averageMonthScores$.pipe(takeUntil(this.destroy$)).subscribe(monthScores => {
+        this.chartData = [
+          {
+            name: 'Sentiment',
+            series: monthScores.map(score => ({
+              name: new Date(score.month),
+              value: score.avg_sentiment_score
+            }))
+          }
+        ];
       });
     }
   }
@@ -149,46 +172,6 @@ export class StatsComponent implements OnInit, OnDestroy {
               });
             }
           });
-        }
-      });
-    } else if (this.currentData === 'averageWeekScores') {
-      this.averageWeekScores$.subscribe(data => {
-        const details = data.find(score => score.week === id);
-        if (details) {
-          this.selectedDetails = details;
-          this.sentimentData = [{
-            name: 'Week',
-            series: [
-              {name: details.week, value: details.avg_sentiment_score}
-            ]
-          }];
-          this.emotionData = [
-            {name: 'Joy', value: details.avg_joy_score},
-            {name: 'Sadness', value: details.avg_sadness_score},
-            {name: 'Anger', value: details.avg_anger_score},
-            {name: 'Fear', value: details.avg_fear_score},
-            {name: 'Disgust', value: details.avg_disgust_score}
-          ];
-        }
-      });
-    } else if (this.currentData === 'averageMonthScores') {
-      this.averageMonthScores$.subscribe(data => {
-        const details = data.find(score => score.month === id);
-        if (details) {
-          this.selectedDetails = details;
-          this.sentimentData = [{
-            name: 'Month',
-            series: [
-              {name: details.month, value: details.avg_sentiment_score}
-            ]
-          }];
-          this.emotionData = [
-            {name: 'Joy', value: details.avg_joy_score},
-            {name: 'Sadness', value: details.avg_sadness_score},
-            {name: 'Anger', value: details.avg_anger_score},
-            {name: 'Fear', value: details.avg_fear_score},
-            {name: 'Disgust', value: details.avg_disgust_score}
-          ];
         }
       });
     }
