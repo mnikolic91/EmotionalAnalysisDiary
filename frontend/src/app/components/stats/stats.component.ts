@@ -1,5 +1,5 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import {AsyncPipe, DatePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {NgbModal, NgbPagination} from '@ng-bootstrap/ng-bootstrap';
@@ -31,10 +31,12 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   selectedDetails: any = null;
   emotionData: any[] = [];
+  currentChartType: string = 'sentiment';
 
   currentData: string = 'inputs';
   destroy$ = new Subject<void>();
   page = 1;
+
 
   view: [number, number] = [700, 400];
   showXAxis = true;
@@ -53,7 +55,7 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.getUserInputs({page: this.page});
     this.getAverageWeekScores({page: this.page});
     this.getAverageMonthScores({page: this.page});
-    this.updateChartData('inputs');
+    this.updateChartData();
     this.loadEmotionData();
   }
 
@@ -92,59 +94,122 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   showData(dataType: string): void {
     this.currentData = dataType;
-    this.updateChartData(dataType);
+    this.updateChartData();
   }
 
-  updateChartData(dataType: string): void {
-    if (dataType === 'inputs') {
+  setChartType(chartType: string): void {
+    this.currentChartType = chartType;
+    this.updateChartData();
+  }
+
+  updateChartData(): void {
+    if (this.currentData === 'inputs') {
       this.inputs$.pipe(takeUntil(this.destroy$)).subscribe(inputs => {
         this.apiService.getAllSentimentEmotionData().pipe(takeUntil(this.destroy$)).subscribe(emotionData => {
-          const chartSeries = inputs.map(input => {
-            const emotionDetails = emotionData.find(emotion => emotion.user_input === input.id);
-            if (emotionDetails) {
+          if (this.currentChartType === 'sentiment') {
+            const chartSeries = inputs.map(input => {
+              const emotionDetails = emotionData.find(emotion => emotion.user_input === input.id);
+              if (emotionDetails) {
+                return {
+                  name: new Date(input.date),
+                  value: emotionDetails.sentiment_score
+                };
+              } else {
+                return null;
+              }
+            }).filter(dataPoint => dataPoint !== null);
+
+            chartSeries.sort((a, b) => a.name.getTime() - b.name.getTime());
+            this.chartData = [
+              {
+                name: 'Sentiment Score',
+                series: chartSeries
+              }
+            ];
+          } else if (this.currentChartType === 'emotion') {
+            const emotions = ['joy_score', 'sadness_score', 'anger_score', 'fear_score', 'disgust_score'];
+            const emotionSeries = emotions.map(emotion => {
               return {
-                name: new Date(input.date),
-                value: emotionDetails.sentiment_score
+                name: emotion.replace('_score', '').charAt(0).toUpperCase() + emotion.replace('_score', '').slice(1),
+                series: inputs.map(input => {
+                  const emotionDetails = emotionData.find(emotionData => emotionData.user_input === input.id);
+                  if (emotionDetails) {
+                    return {
+                      name: new Date(input.date),
+                      value: emotionDetails[emotion]
+                    };
+                  } else {
+                    return null;
+                  }
+                }).filter(dataPoint => dataPoint !== null)
               };
-            } else {
-              return null;
-            }
-          }).filter(dataPoint => dataPoint !== null);
-          chartSeries.sort((a, b) => a.name.getTime() - b.name.getTime());
-          this.chartData = [
-            {
-              name: 'Sentiment Score',
-              series: chartSeries
-            }
-          ];
+            });
+
+            emotionSeries.forEach(series => {
+              series.series.sort((a, b) => a.name.getTime() - b.name.getTime());
+            });
+
+            this.chartData = emotionSeries;
+          }
         });
       });
-    } else if (dataType === 'averageWeekScores') {
+    } else if (this.currentData === 'averageWeekScores') {
       this.averageWeekScores$.pipe(takeUntil(this.destroy$)).subscribe(weekScores => {
-        this.chartData = [
-          {
-            name: 'Sentiment',
-            series: weekScores.map(score => ({
-              name: new Date(score.week),
-              value: score.avg_sentiment_score
-            }))
-          }
-        ];
+        if (this.currentChartType === 'sentiment') {
+          this.chartData = [
+            {
+              name: 'Sentiment',
+              series: weekScores.map(score => ({
+                name: new Date(score.week),
+                value: score.avg_sentiment_score
+              }))
+            }
+          ];
+        } else if (this.currentChartType === 'emotion') {
+          const emotions = ['avg_joy_score', 'avg_sadness_score', 'avg_anger_score', 'avg_fear_score', 'avg_disgust_score'];
+          const emotionSeries = emotions.map(emotion => {
+            return {
+              name: emotion.replace('avg_', '').replace('_score', '').charAt(0).toUpperCase() + emotion.replace('avg_', '').replace('_score', '').slice(1),
+              series: weekScores.map(score => ({
+                name: new Date(score.week),
+                value: score[emotion]
+              }))
+            };
+          });
+
+          this.chartData = emotionSeries;
+        }
       });
-    } else if (dataType === 'averageMonthScores') {
+    } else if (this.currentData === 'averageMonthScores') {
       this.averageMonthScores$.pipe(takeUntil(this.destroy$)).subscribe(monthScores => {
-        this.chartData = [
-          {
-            name: 'Sentiment',
-            series: monthScores.map(score => ({
-              name: new Date(score.month),
-              value: score.avg_sentiment_score
-            }))
-          }
-        ];
+        if (this.currentChartType === 'sentiment') {
+          this.chartData = [
+            {
+              name: 'Sentiment',
+              series: monthScores.map(score => ({
+                name: new Date(score.month),
+                value: score.avg_sentiment_score
+              }))
+            }
+          ];
+        } else if (this.currentChartType === 'emotion') {
+          const emotions = ['avg_joy_score', 'avg_sadness_score', 'avg_anger_score', 'avg_fear_score', 'avg_disgust_score'];
+          const emotionSeries = emotions.map(emotion => {
+            return {
+              name: emotion.replace('avg_', '').replace('_score', '').charAt(0).toUpperCase() + emotion.replace('avg_', '').replace('_score', '').slice(1),
+              series: monthScores.map(score => ({
+                name: new Date(score.month),
+                value: score[emotion]
+              }))
+            };
+          });
+
+          this.chartData = emotionSeries;
+        }
       });
     }
   }
+
 
   showDetails(id: number | string): void {
     if (this.currentData === 'inputs') {
@@ -177,7 +242,6 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
   }
 
-
   openModal(sentimentLabel: string, sentimentScore: number, emotionData: any[], fullText: string = '') {
     const modalRef = this.modalService.open(EmotionStatsModalComponent, {size: 'lg'});
     modalRef.componentInstance.sentimentLabel = sentimentLabel;
@@ -185,5 +249,4 @@ export class StatsComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.emotionData = emotionData;
     modalRef.componentInstance.fullText = fullText;
   }
-
 }
