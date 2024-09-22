@@ -194,6 +194,7 @@ export class StatsComponent implements OnInit, OnDestroy {
     }
   }
 
+
   openModal(sentimentLabel: string, sentimentScore: number, emotionData: any[], fullText: string = '') {
     const modalRef = this.modalService.open(EmotionStatsModalComponent, {size: 'lg'});
     modalRef.componentInstance.sentimentLabel = sentimentLabel;

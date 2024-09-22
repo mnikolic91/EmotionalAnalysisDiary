@@ -63,6 +63,11 @@
               <th>Text</th>
             } @else {
               <th>Sentiment</th>
+              <th>Joy</th>
+              <th>Sadness</th>
+              <th>Anger</th>
+              <th>Fear</th>
+              <th>Disgust</th>
             }
           </tr>
           </thead>
@@ -84,15 +89,15 @@
                     <button (click)="showDetails(input.id)">Details</button>
                   </td>
                 </tr>
-
               } @empty {
                 <tr>
-                  <td colspan="2" class="text-center">
+                  <td colspan="3" class="text-center">
                     <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No user inputs found</h5>
                   </td>
                 </tr>
               }
             }
+
             @if (currentData === 'averageWeekScores' && averageWeekScores$ | async; as averageWeekScores) {
               @for (score of averageWeekScores; track score.week) {
                 <tr>
@@ -101,15 +106,16 @@
                       {{ score.week | date:'dd.MM.yyyy' }}
                     </a>
                   </td>
-                  <td>
-                    <a (click)="showDetails(score.week)">
-                      {{ score.avg_sentiment_score }}
-                    </a>
-                  </td>
+                  <td>{{ score.avg_sentiment_score }}</td>
+                  <td>{{ score.avg_joy_score }}</td>
+                  <td>{{ score.avg_sadness_score }}</td>
+                  <td>{{ score.avg_anger_score }}</td>
+                  <td>{{ score.avg_fear_score }}</td>
+                  <td>{{ score.avg_disgust_score }}</td>
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="2" class="text-center">
+                  <td colspan="7" class="text-center">
                     <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No average week scores found</h5>
                   </td>
                 </tr>
@@ -124,15 +130,16 @@
                       {{ score.month | date:'dd.MM.yyyy' }}
                     </a>
                   </td>
-                  <td>
-                    <a (click)="showDetails(score.month)">
-                      {{ score.avg_sentiment_score }}
-                    </a>
-                  </td>
+                  <td>{{ score.avg_sentiment_score }}</td>
+                  <td>{{ score.avg_joy_score }}</td>
+                  <td>{{ score.avg_sadness_score }}</td>
+                  <td>{{ score.avg_anger_score }}</td>
+                  <td>{{ score.avg_fear_score }}</td>
+                  <td>{{ score.avg_disgust_score }}</td>
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="2" class="text-center">
+                  <td colspan="7" class="text-center">
                     <h5 class="mt-2"><i class="fa fa-exclamation-triangle"></i> No average month scores found</h5>
                   </td>
                 </tr>
@@ -141,6 +148,7 @@
           </tbody>
         </table>
       </div>
+
     </div>
   </div>
 </div>
