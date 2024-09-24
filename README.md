@@ -38,7 +38,7 @@ To run the **Emotional Analysis Diary** locally, follow these steps:
 ### Backend (Django):
 1. Clone the repository:
    ```bash
-   git clone https://github.com/mnikolic91/EmotionalAnalysisDiary.git
+   git clone https://github.com/mnikolic91/emotional-analysis-diary.git
    cd EmotionalAnalysisDiary/backend
 2. Install Python dependencies:
     ```bash
